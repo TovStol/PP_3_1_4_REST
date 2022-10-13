@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.RoleService;
+import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
@@ -16,16 +16,12 @@ import java.util.List;
 @Controller
 public class UserController {
     private final UserService userService;
-    private final RoleService roleService;
+    private final RoleServiceImpl roleServiceImpl;
 
-    public UserController(UserService userService, RoleService roleService) {
-
+    public UserController(UserService userService, RoleServiceImpl roleServiceImpl) {
         this.userService = userService;
-        this.roleService = roleService;
-
+        this.roleServiceImpl = roleServiceImpl;
     }
-
-
 
     @GetMapping(value = "/users")
     public String getUser(Model model, Principal principal) {
@@ -42,7 +38,7 @@ public class UserController {
     @GetMapping(value = "/admins/new")
     public String addUser(Model model) {
         User user = new User();
-        List<Role> role = roleService.getAllRole();
+        List<Role> role = roleServiceImpl.getAllRole();
         model.addAttribute("user", user);
         model.addAttribute("listRole", role);
         return "add_user";
@@ -57,12 +53,11 @@ public class UserController {
     @GetMapping(value = "admins/edit/{id}")
     public String editUserForm(@PathVariable Long id, Model model) {
         User user = userService.getUserById(id);
-        List<Role> role = roleService.getAllRole();
+        List<Role> role = roleServiceImpl.getAllRole();
         model.addAttribute("user", user);
         model.addAttribute("listRole", role);
         return "edit_user";
     }
-
 
     @PostMapping(value = "/admins/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute("user") User user) {
@@ -75,5 +70,4 @@ public class UserController {
         userService.removeUserById(id);
         return "redirect:/admins";
     }
-
 }

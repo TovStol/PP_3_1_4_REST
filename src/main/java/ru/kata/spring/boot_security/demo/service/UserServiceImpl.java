@@ -19,9 +19,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
 
-
     public UserServiceImpl(UserDao userDao) {
-
         this.userDao = userDao;
     }
 
@@ -66,15 +64,16 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserByName(name);
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = getUserByName(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
+        System.out.println(user);
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(), mapRolesToAuthority(user.getRoles()));
+
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthority(Collection<Role> roles) {
