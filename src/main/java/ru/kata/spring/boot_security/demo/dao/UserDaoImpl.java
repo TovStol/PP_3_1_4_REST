@@ -51,4 +51,12 @@ public class UserDaoImpl implements UserDao {
         entityManager.detach(user);
         return user;
     }
+
+    public User getUserByEmail(String email) {
+        Query query = entityManager.createQuery("FROM User u WHERE u.email = :email");
+        query.setParameter("email", email);
+        User user = (User) query.getSingleResult();
+        entityManager.detach(user);
+        return user;
+    }
 }
