@@ -15,8 +15,8 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "name", unique = true)
-    private String username;
+    @Column(name = "first_name")
+    private String firstName;
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "age")
@@ -25,18 +25,18 @@ public class User implements UserDetails {
     private String email;
     @Column(name = "password")
     private String password;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     public User() {
     }
-    public User(String username, String lastName, Byte age, String email, String password, Set<Role> roles) {
-        this.username = username;
+    public User(String firstName, String lastName, Byte age, String email, String password) {
+        this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.email = email;
         this.password = password;
-        this.roles = roles;
     }
 
     @Override
@@ -51,7 +51,11 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return firstName;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
     @Override
@@ -73,8 +77,8 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public void setUsername(String name) {
-        this.username = name;
+    public void setFirstName(String name) {
+        this.firstName = name;
     }
 
     public void setLastName(String lastName) {
@@ -126,7 +130,7 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", username='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", password='" + password + '\'' +

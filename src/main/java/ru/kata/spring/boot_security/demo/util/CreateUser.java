@@ -15,9 +15,7 @@ import java.util.Set;
 public class CreateUser {
     private final UserService userService;
     private final RoleServiceImpl roleService;
-
     private final PasswordEncoder passwordEncoder;
-
 
     public CreateUser(UserService userService, RoleServiceImpl roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
@@ -40,11 +38,14 @@ public class CreateUser {
         adminRole.add(role2);
 
         User user1 = new User("user1", "user1", (byte) 33, "user1@mail.ru",
-                passwordEncoder.encode("user1"), adminRole);
+                passwordEncoder.encode("user1"));
+
+        user1.setRoles(adminRole);
         userService.saveUser(user1);
 
         User user2 = new User("user2", "user2", (byte) 33, "user2@mail.ru",
-                passwordEncoder.encode("user2"), userRole);
+                passwordEncoder.encode("user2"));
+        user2.setRoles(userRole);
         userService.saveUser(user2);
 
     }

@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(Long id, User user) {
         User existUser = userDao.getUserById(id);
         existUser.setId(id);
-        existUser.setUsername(user.getUsername());
+        existUser.setFirstName(user.getFirstName());
         existUser.setLastName(user.getLastName());
         existUser.setAge(user.getAge());
         userDao.updateUser(user);
