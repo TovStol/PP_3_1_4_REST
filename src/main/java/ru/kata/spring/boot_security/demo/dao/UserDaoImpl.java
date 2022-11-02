@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.User;
 
@@ -9,9 +11,12 @@ import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
+
+
     private final EntityManager entityManager;
 
     public UserDaoImpl(EntityManager entityManager) {
+
         this.entityManager = entityManager;
     }
 
@@ -22,8 +27,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void removeUserById(Long id) {
-        User user = entityManager.find(User.class, id);
-        entityManager.remove(user);
+        User userDelete = entityManager.find(User.class, id);
+        if (userDelete != null) entityManager.remove(userDelete);
     }
 
     @Override
@@ -33,14 +38,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateUser(User user) {
-        entityManager.merge(user);
+    public boolean updateUser(User user) {
+        User userNew = entityManager.merge(user);
+        return userNew != null;
     }
 
     @Override
     public User getUserById(Long id) {
         User user = entityManager.find(User.class, id);
-        entityManager.detach(user);
+        if (user != null) entityManager.detach(user);
         return user;
     }
 

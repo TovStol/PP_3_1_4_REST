@@ -13,14 +13,15 @@ import java.util.Set;
 
 @Component
 public class CreateUser {
+    private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final RoleServiceImpl roleService;
-    private final PasswordEncoder passwordEncoder;
 
-    public CreateUser(UserService userService, RoleServiceImpl roleService, PasswordEncoder passwordEncoder) {
+
+    public CreateUser(PasswordEncoder passwordEncoder, UserService userService, RoleServiceImpl roleService) {
+        this.passwordEncoder = passwordEncoder;
         this.userService = userService;
         this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct

@@ -1,16 +1,15 @@
 async function tableAdmin() {
     const url = '/api/users'
     const container = $('#adminTable');
-    $.ajax({
-        url: url,
+    const method = {
         dataType: 'json',
-        type: "GET",
-    }).done((response) => {
-        console.log(response)
+        type: 'GET'
+    }
+    fetch(url, method).then(response => response.json()).then(user => {
 
         let html = ''
         let rolesList = ''
-        response.forEach(user => {
+        user.forEach(user => {
             for (const rolesListElement of user.roles) {
                 rolesList = rolesList + rolesListElement.name + ' '
             }
@@ -133,8 +132,7 @@ function updateUser() {
         },
         body: JSON.stringify(user)
     }
-    fetch(url, method)
-    tableAdmin()
+    fetch(url, method).then(() => tableAdmin())
 }
 
 

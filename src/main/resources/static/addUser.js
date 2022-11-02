@@ -14,8 +14,6 @@ function addUser() {
         roles: temp
     }
 
-    window.location.href = '/admins'
-
     const url = '/api/users'
     const method = {
         method: 'POST',
@@ -25,6 +23,5 @@ function addUser() {
         body: JSON.stringify(user)
     }
     fetch(url, method)
-
-    window.location.href = '/admins'
 }
+

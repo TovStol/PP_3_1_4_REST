@@ -1,10 +1,12 @@
 package ru.kata.spring.boot_security.demo.service;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
+
 
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
@@ -33,6 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void removeUserById(Long id) {
         userDao.removeUserById(id);
+
     }
 
     @Transactional(readOnly = true)
@@ -43,13 +47,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateUser(Long id, User user) {
+    public boolean updateUser(Long id, User user) {
         User existUser = userDao.getUserById(id);
-        existUser.setId(id);
-        existUser.setFirstName(user.getFirstName());
-        existUser.setLastName(user.getLastName());
-        existUser.setAge(user.getAge());
-        userDao.updateUser(user);
+        user.setId(existUser.getId());
+        return userDao.updateUser(user);
     }
 
     @Transactional(readOnly = true)
